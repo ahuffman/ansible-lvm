@@ -22,7 +22,7 @@ Role Variables
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_mode`: Permissions of the mount point  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_dump`: Whether or not the filesystem should be dumped (5th column of /etc/fstab) `man fstab`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_passno`: Filesystem check pass number (6th column of /etc/fstab) `man fstab`  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_opts`: Mount options for the Logical Volume, such as defaults   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_opts`: Comma separated list of mount options for the Logical Volume, such as defaults   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`fstype`: Type of filesystem to create on the Logical Volume   
    
 
