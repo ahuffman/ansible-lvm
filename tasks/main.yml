@@ -1,31 +1,40 @@
 ---
 #Create volume group
-- name: Ensure Logical Volume Group exists
+- name: "Ensure Logical Volume Group exists"
   lvg:
     vg: "{{ item.vg }}"
     pvs: "{{ item.pvs | join(',') }}"
-    state: present
+    state: "present"
   with_items:
     - "{{ lvm_vgs }}"
+  loop_control:
+    label: "{{ item.vg }}"
+  become: True
 
 #Create logical volume(s)
-- name: Ensure Logical Volume exists
+- name: "Ensure Logical Volume exists"
   lvol:
     vg: "{{ item.vg }}"
     lv: "{{ item.lv }}"
     size: "{{ item.size }}"
-    state: present
+    state: "present"
   with_items: "{{ lvm_lvs }}"
+  loop_control:
+    label: "{{ item.lv }}"
+  become: True
 
 #Create filesystems
-- name: Ensure filesystem exists on Logical Volume
+- name: "Ensure filesystem exists on Logical Volume"
   filesystem:
     fstype: "{{ item.fstype }}"
-    dev: "/dev/{{item.vg }}/{{ item.lv }}"
+    dev: "/dev/{{ item.vg }}/{{ item.lv }}"
   with_items: "{{ lvm_lvs }}"
+  loop_control:
+    label: "{{ item.lv }}"
+  become: True
 
 #Mount new volumes and ensure they are in /etc/fstab
-- name: Ensure Logical Volume is mounted
+- name: "Ensure Logical Volume is mounted"
   mount:
     src: "/dev/{{ item.vg }}/{{ item.lv }}"
     path: "{{ item.mount }}"
@@ -33,14 +42,20 @@
     opts: "{{ item.mount_opts }}"
     dump: "{{ item.mount_dump }}"
     passno: "{{ item.mount_passno }}"
-    state: mounted
+    state: "mounted"
   with_items: "{{ lvm_lvs }}"
+  loop_control:
+    label: "{{ item.lv }}"
+  become: True
 
 #Set permissions on mount points
-- name: Ensure mount point has desired permissions
+- name: "Ensure mount point has desired permissions"
   file:
     path: "{{ item.mount }}"
     owner: "{{ item.mount_owner }}"
     group: "{{ item.mount_group }}"
     mode: "{{ item.mount_mode }}"
   with_items: "{{ lvm_lvs }}"
+  loop_control:
+    label: "{{ item.mount }}"
+  become: True
