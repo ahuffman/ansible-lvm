@@ -48,6 +48,17 @@
     label: "{{ item.lv }}"
   become: True
 
+#Grow filesystems; task repeated due to XFS only supporting resizing when mounted
+- name: "Grow the filesystem(s) when necessary"
+  filesystem:
+    fstype: "{{ item.fstype }}"
+    dev: "/dev/{{ item.vg }}/{{ item.lv }}"
+    resizefs: "{{ item.resizefs | default(False) }}"
+  with_items: "{{ lvm_lvs }}"
+  loop_control:
+    label: "{{ item.lv }}"
+  become: True
+
 #Set permissions on mount points
 - name: "Ensure mount point has desired permissions"
   file:
