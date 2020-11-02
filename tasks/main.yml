@@ -1,7 +1,7 @@
 ---
 #Probe pv partitions to detect size changes
 - name: "Probe partitions"
-  parted:
+  community.general.parted:
     device: "{{ item.1 }}"
     unit: GB
   with_subelements:
