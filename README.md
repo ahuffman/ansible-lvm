@@ -1,6 +1,17 @@
 # ahuffman.lvm
 Configures Logical Volume Groups, Logical Volumes, Filesystems, mount points, and fstab.
 
+## Requirements
+
+* `ansible>=2.9`
+* `community.general>=0.2.0` collection; use either methods below to install it
+  * `ansible-galaxy collection install community.general`
+  * add following to `requirements.yml`
+    ```
+    collections:
+      - name: community.general
+    ```
+
 ## Variables
 |Variable Name|Description|Required|Default Value|Type|
 |---|---|:---:|:---:|:---:|

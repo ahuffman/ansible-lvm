@@ -1,9 +1,22 @@
 ---
+#Probe pv partitions to detect size changes
+- name: "Probe partitions"
+  community.general.parted:
+    device: "{{ item.1 }}"
+    unit: GB
+  with_subelements:
+    - "{{ lvm_vgs }}"
+    - pvs
+  loop_control:
+    label: "{{ item.1 }}"
+  become: True
+
 #Create volume group
 - name: "Ensure Logical Volume Group exists"
-  lvg:
+  community.general.lvg:
     vg: "{{ item.vg }}"
     pvs: "{{ item.pvs | join(',') }}"
+    pvresize: true
     state: "present"
   with_items:
     - "{{ lvm_vgs }}"
