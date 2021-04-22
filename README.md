@@ -42,6 +42,7 @@ Configures Logical Volume Groups, Logical Volumes, Filesystems, mount points, an
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`fstype`: Type of filesystem to create on the Logical Volume   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`resizefs`: Boolean flag, if `True` and the block device and filesystem sizes differ, grow the filesystem into the space. For limitations,
 see [filesystem module](https://docs.ansible.com/ansible/latest/modules/filesystem_module.html) documentation. Defaults to `False`.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`fsopts`: Filesystem **creation** options (mkfs command additional options) as defined by the filesystem Ansible module. Can be omitted.
 
 
 ## Example Playbook
