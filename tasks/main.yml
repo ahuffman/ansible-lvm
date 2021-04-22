@@ -41,6 +41,7 @@
   filesystem:
     fstype: "{{ item.fstype }}"
     dev: "/dev/{{ item.vg }}/{{ item.lv }}"
+    opts: "{{ item.fsopts | default(omit) }}"
   with_items: "{{ lvm_lvs }}"
   loop_control:
     label: "{{ item.lv }}"
