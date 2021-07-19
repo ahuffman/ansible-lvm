@@ -1,3 +1,5 @@
+![Ansible Role](https://img.shields.io/ansible/role/d/21394)
+
 # ahuffman.lvm
 Configures Logical Volume Groups, Logical Volumes, Filesystems, mount points, and fstab.
 
