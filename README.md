@@ -3,6 +3,17 @@
 # ahuffman.lvm
 Configures Logical Volume Groups, Logical Volumes, Filesystems, mount points, and fstab.
 
+## Requirements
+
+* `ansible>=2.9`
+* `community.general>=0.2.0` collection; use either methods below to install it
+  * `ansible-galaxy collection install community.general`
+  * add following to `requirements.yml`
+    ```
+    collections:
+      - name: community.general
+    ```
+
 ## Variables
 |Variable Name|Description|Required|Default Value|Type|
 |---|---|:---:|:---:|:---:|
@@ -31,6 +42,9 @@ Configures Logical Volume Groups, Logical Volumes, Filesystems, mount points, an
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_passno`: Filesystem check pass number (6th column of /etc/fstab) `man fstab`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_opts`: Comma separated list of mount options for the Logical Volume, such as defaults   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`fstype`: Type of filesystem to create on the Logical Volume   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`resizefs`: Boolean flag, if `True` and the block device and filesystem sizes differ, grow the filesystem into the space. For limitations,
+see [filesystem module](https://docs.ansible.com/ansible/latest/modules/filesystem_module.html) documentation. Defaults to `False`.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`fsopts`: Filesystem **creation** options (mkfs command additional options) as defined by the filesystem Ansible module. Can be omitted.
 
 
 ## Example Playbook

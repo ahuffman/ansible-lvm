@@ -1,9 +1,22 @@
 ---
+#Probe pv partitions to detect size changes
+- name: "Probe partitions"
+  community.general.parted:
+    device: "{{ item.1 }}"
+    unit: GB
+  with_subelements:
+    - "{{ lvm_vgs }}"
+    - pvs
+  loop_control:
+    label: "{{ item.1 }}"
+  become: True
+
 #Create volume group
 - name: "Ensure Logical Volume Group exists"
-  lvg:
+  community.general.lvg:
     vg: "{{ item.vg }}"
     pvs: "{{ item.pvs | join(',') }}"
+    pvresize: true
     state: "present"
   with_items:
     - "{{ lvm_vgs }}"
@@ -28,6 +41,7 @@
   filesystem:
     fstype: "{{ item.fstype }}"
     dev: "/dev/{{ item.vg }}/{{ item.lv }}"
+    opts: "{{ item.fsopts | default(omit) }}"
   with_items: "{{ lvm_lvs }}"
   loop_control:
     label: "{{ item.lv }}"
@@ -43,6 +57,17 @@
     dump: "{{ item.mount_dump }}"
     passno: "{{ item.mount_passno }}"
     state: "mounted"
+  with_items: "{{ lvm_lvs }}"
+  loop_control:
+    label: "{{ item.lv }}"
+  become: True
+
+#Grow filesystems; task repeated due to XFS only supporting resizing when mounted
+- name: "Grow the filesystem(s) when necessary"
+  filesystem:
+    fstype: "{{ item.fstype }}"
+    dev: "/dev/{{ item.vg }}/{{ item.lv }}"
+    resizefs: "{{ item.resizefs | default(False) }}"
   with_items: "{{ lvm_lvs }}"
   loop_control:
     label: "{{ item.lv }}"
