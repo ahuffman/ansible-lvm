@@ -26,10 +26,11 @@
 
 #Create logical volume(s)
 - name: "Ensure Logical Volume exists"
-  lvol:
+  community.general.lvol:
     vg: "{{ item.vg }}"
     lv: "{{ item.lv }}"
     size: "{{ item.size }}"
+    opts: "{{ item.opts | default(omit) }}"
     state: "present"
   with_items: "{{ lvm_lvs }}"
   loop_control:
@@ -38,7 +39,7 @@
 
 #Create filesystems
 - name: "Ensure filesystem exists on Logical Volume"
-  filesystem:
+  community.general.filesystem:
     fstype: "{{ item.fstype }}"
     dev: "/dev/{{ item.vg }}/{{ item.lv }}"
     opts: "{{ item.fsopts | default(omit) }}"
@@ -49,7 +50,7 @@
 
 #Mount new volumes and ensure they are in /etc/fstab
 - name: "Ensure Logical Volume is mounted"
-  mount:
+  ansible.posix.mount:
     src: "/dev/{{ item.vg }}/{{ item.lv }}"
     path: "{{ item.mount }}"
     fstype: "{{ item.fstype }}"
@@ -64,7 +65,7 @@
 
 #Grow filesystems; task repeated due to XFS only supporting resizing when mounted
 - name: "Grow the filesystem(s) when necessary"
-  filesystem:
+  community.general.filesystem:
     fstype: "{{ item.fstype }}"
     dev: "/dev/{{ item.vg }}/{{ item.lv }}"
     resizefs: "{{ item.resizefs | default(False) }}"
@@ -75,7 +76,7 @@
 
 #Set permissions on mount points
 - name: "Ensure mount point has desired permissions"
-  file:
+  ansible.builtin.file:
     path: "{{ item.mount }}"
     owner: "{{ item.mount_owner }}"
     group: "{{ item.mount_group }}"

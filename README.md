@@ -34,6 +34,7 @@ Configures Logical Volume Groups, Logical Volumes, Filesystems, mount points, an
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`vg`: Volume Group to create the Logical Volume in   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`lv`: Name of the Logical Volume to create   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`size`: Size of the Logical Volume to create   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`opts`: Free-form options to be passed to the lvcreate command
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount`: Where you would like the Logical Volume mounted   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_owner`: Owner of the mount point  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_group`: Group ownership of the mount point  
@@ -42,9 +43,9 @@ Configures Logical Volume Groups, Logical Volumes, Filesystems, mount points, an
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_passno`: Filesystem check pass number (6th column of /etc/fstab) `man fstab`  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mount_opts`: Comma separated list of mount options for the Logical Volume, such as defaults   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`fstype`: Type of filesystem to create on the Logical Volume   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`fsopts`: Filesystem **creation** options (mkfs command additional options) as defined by the filesystem Ansible module. Can be omitted.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`resizefs`: Boolean flag, if `True` and the block device and filesystem sizes differ, grow the filesystem into the space. For limitations,
 see [filesystem module](https://docs.ansible.com/ansible/latest/modules/filesystem_module.html) documentation. Defaults to `False`.
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`fsopts`: Filesystem **creation** options (mkfs command additional options) as defined by the filesystem Ansible module. Can be omitted.
 
 
 ## Example Playbook
